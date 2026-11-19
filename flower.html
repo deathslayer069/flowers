@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloom</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    background: radial-gradient(ellipse at 50% 35%, #24382f 0%, #121c18 70%);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  /* Everything is sized in em so the flower scales with the window */
+  .flower {
+    position: relative;
+    width: 60em;
+    height: 70em;
+    font-size: min(1.15vh, 1.7vw);
+  }
+
+  /* ---------- Stem ---------- */
+  .stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 1.3em;
+    height: 0;
+    margin-left: -0.65em;
+    background: linear-gradient(90deg, #2f6a3d, #5aa866 45%, #3a7c48);
+    border-radius: 0.7em 0.7em 0 0;
+    animation: grow 2.4s ease-out forwards;
+  }
+
+  /* ---------- Leaves ---------- */
+  .leaf {
+    position: absolute;
+    left: 50%;
+    width: 18em;
+    height: 8em;
+    background: linear-gradient(160deg, #66b872 0%, #3b8450 55%, #2a6a3d 100%);
+    border-radius: 0 100% 0 100%;
+    transform-origin: 0 0;
+    --flip: scaleX(1);
+    animation: leaf 1.6s cubic-bezier(.2, .7, .2, 1) both;
+    filter: drop-shadow(0 0.3em 0.4em rgba(0, 0, 0, 0.35));
+  }
+  .leaf.l { --flip: scaleX(-1); }
+
+  /* centre vein */
+  .leaf::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 19.7em;
+    height: 0.14em;
+    background: rgba(220, 255, 220, 0.35);
+    transform-origin: 0 0;
+    transform: rotate(23.96deg);
+  }
+
+  /* ---------- Flower head ---------- */
+  .head {
+    position: absolute;
+    left: 50%;
+    top: 17em;
+    width: 0;
+    height: 0;
+    animation: rise 2.4s ease-out both;
+  }
+
+  .bud {
+    position: absolute;
+    left: -2.2em;
+    top: -5.5em;
+    width: 4.4em;
+    height: 6.5em;
+    border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+    background: linear-gradient(to top, #3f8450 0%, #4f9a5b 28%, #e0568a 55%, #ff9ab8 100%);
+    animation: bud 1.2s ease-in 2.7s both;
+  }
+
+  .petal {
+    --k: 1;
+    --h: calc(var(--h0) * var(--k));
+    --r: calc(var(--i) * var(--step) + var(--off));
+    position: absolute;
+    left: calc(var(--w) / -2);
+    top: calc(var(--h) * -1);
+    width: var(--w);
+    height: var(--h);
+    transform-origin: 50% 100%;
+    border-radius: 50% 50% 45% 45% / 85% 85% 15% 15%;
+    background: linear-gradient(to top, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%);
+    filter: drop-shadow(0 0.15em 0.3em rgba(0, 0, 0, 0.3));
+    animation: open 2.8s cubic-bezier(.22, .7, .2, 1) both;
+    animation-delay: calc(var(--d0) + var(--i) * 0.1s);
+  }
+  .petal:nth-child(odd) { --k: 0.93; }
+  .petal:nth-child(3n)  { --k: 0.97; }
+
+  /* petal vein */
+  .petal::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    width: 0.14em;
+    height: 70%;
+    transform: translateX(-50%);
+    border-radius: 1em;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.28));
+  }
+
+  .outer { --w: 7em;   --h0: 13em; --step: 30deg; --off: 0deg;  --d0: 2.8s;
+           --c1: #b8305f; --c2: #f27aa3; --c3: #ffd6e3; }
+  .mid   { --w: 5.6em; --h0: 10em; --step: 36deg; --off: 18deg; --d0: 3.4s;
+           --c1: #a3214f; --c2: #e0568a; --c3: #ffb3cb; }
+  .inner { --w: 4.2em; --h0: 7em;  --step: 45deg; --off: 11deg; --d0: 4s;
+           --c1: #8a1642; --c2: #cc3a74; --c3: #f58db0; }
+
+  .center {
+    position: absolute;
+    left: -3em;
+    top: -3em;
+    width: 6em;
+    height: 6em;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55), transparent 40%),
+      repeating-radial-gradient(circle, #c98a00 0 0.3em, #f2c230 0.3em 0.6em);
+    box-shadow: 0 0 0 0.35em #b07a00, 0 0.3em 0.8em rgba(0, 0, 0, 0.4);
+    animation: pop 1s ease-out 3.6s both;
+  }
+
+  /* ---------- Animations ---------- */
+  @keyframes grow { to { height: 53em; } }
+
+  @keyframes rise { from { top: 70em; } to { top: 17em; } }
+
+  @keyframes leaf {
+    from { transform: var(--flip) rotate(calc(var(--rot) + 60deg)) scale(0); }
+    to   { transform: var(--flip) rotate(var(--rot)) scale(var(--s)); }
+  }
+
+  @keyframes bud {
+    0%, 60% { opacity: 1; transform: scale(1); }
+    100%    { opacity: 0; transform: scale(1.5); }
+  }
+
+  @keyframes open {
+    0%   { opacity: 0; transform: rotate(calc(var(--r) * 0.1)) scale(0.3); }
+    15%  { opacity: 1; }
+    100% { opacity: 1; transform: rotate(var(--r)) scale(1); }
+  }
+
+  @keyframes pop {
+    from { transform: scale(0); }
+    to   { transform: scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01s !important; animation-delay: 0s !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="flower">
+    <div class="stem"></div>
+
+    <div class="leaf r" style="top:64em; --s:1.1;  --rot:-42deg; animation-delay:.4s"></div>
+    <div class="leaf l" style="top:60em; --s:1.15; --rot:-46deg; animation-delay:.55s"></div>
+    <div class="leaf r" style="top:54em; --s:1;    --rot:-50deg; animation-delay:.8s"></div>
+    <div class="leaf l" style="top:49em; --s:.95;  --rot:-54deg; animation-delay:1s"></div>
+    <div class="leaf r" style="top:44em; --s:.85;  --rot:-58deg; animation-delay:1.2s"></div>
+    <div class="leaf l" style="top:40em; --s:.78;  --rot:-62deg; animation-delay:1.4s"></div>
+    <div class="leaf r" style="top:36em; --s:.68;  --rot:-66deg; animation-delay:1.6s"></div>
+    <div class="leaf l" style="top:33em; --s:.6;   --rot:-70deg; animation-delay:1.8s"></div>
+
+    <div class="head">
+      <div class="bud"></div>
+
+      <div class="ring outer">
+        <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+        <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+        <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+        <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+        <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+        <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+      </div>
+
+      <div class="ring mid">
+        <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+        <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+        <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+        <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+        <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+      </div>
+
+      <div class="ring inner">
+        <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+        <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+        <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+        <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+      </div>
+
+      <div class="center"></div>
+    </div>
+  </div>
+</body>
+</html>
