@@ -5,8 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bloom Bush Wreath</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+  }
 
   body {
     background: radial-gradient(ellipse at 50% 42%, #24382f 0%, #121c18 75%);
@@ -54,27 +61,30 @@
   .stem-ring {
     fill: none;
     stroke-linecap: round;
-    stroke-dasharray: 290;
-    stroke-dashoffset: 290;
     animation: drawRing 3s cubic-bezier(.35, .05, .25, 1) forwards;
   }
+
   .stem-ring.r1 {
     stroke: #3a7c48;
     stroke-width: 2.3;
+    stroke-dasharray: 271;
+    stroke-dashoffset: 271;
     animation-delay: 0.05s;
   }
+
   .stem-ring.r2 {
     stroke: #5aa866;
     stroke-width: 1.5;
-    stroke-dasharray: 278;
-    stroke-dashoffset: 278;
+    stroke-dasharray: 263;
+    stroke-dashoffset: 263;
     animation-delay: 0.25s;
   }
+
   .stem-ring.r3 {
     stroke: #265933;
     stroke-width: 1.1;
-    stroke-dasharray: 302;
-    stroke-dashoffset: 302;
+    stroke-dasharray: 279;
+    stroke-dashoffset: 279;
     animation-delay: 0.45s;
   }
 
@@ -84,7 +94,7 @@
     top: 50%;
     width: 0;
     height: 0;
-    transform: rotate(var(--a)) translateY(-30.9em);
+    transform: rotate(var(--a, 0deg)) translateY(-30.96em);
   }
 
   .w-leaf {
@@ -101,20 +111,22 @@
     animation-delay: var(--wd, 0.5s);
     filter: drop-shadow(0 0.25em 0.35em rgba(0, 0, 0, 0.35));
   }
+
   .w-leaf.in {
     --dir: -1;
     background: linear-gradient(160deg, #56a863 0%, #2f7041 60%, #1e4f2c 100%);
   }
+
   .w-leaf::after {
     content: "";
     position: absolute;
     left: 0;
     top: 0;
-    width: 8.9em;
+    width: 8.95em;
     height: 0.11em;
     background: rgba(220, 255, 220, 0.35);
     transform-origin: 0 0;
-    transform: rotate(23.96deg);
+    transform: rotate(23.7deg);
   }
 
   /* ================= FLOWER BUSH INSIDE THE CIRCLE ================= */
@@ -135,7 +147,7 @@
   /* Dense base foliage mound anchoring the flower stems */
   .foliage-base {
     position: absolute;
-    bottom: -1em;
+    bottom: 0;
     left: 50%;
     width: 0;
     height: 0;
@@ -144,8 +156,6 @@
 
   .bush-leaf {
     position: absolute;
-    left: 0;
-    top: 0;
     width: 17em;
     height: 7.6em;
     background: linear-gradient(160deg, #5eb36b 0%, #357a48 55%, #215931 100%);
@@ -156,7 +166,11 @@
     animation-delay: var(--bd, 0.3s);
     filter: drop-shadow(0 0.3em 0.45em rgba(0, 0, 0, 0.4));
   }
-  .bush-leaf.l { --flip: scaleX(-1); }
+
+  .bush-leaf.l {
+    --flip: scaleX(-1);
+  }
+
   .bush-leaf::after {
     content: "";
     position: absolute;
@@ -166,13 +180,13 @@
     height: 0.14em;
     background: rgba(220, 255, 220, 0.32);
     transform-origin: 0 0;
-    transform: rotate(23.96deg);
+    transform: rotate(24.09deg);
   }
 
   /* Individual flower anchored at a shared root point so stems fan out like a bush */
   .flower {
     position: absolute;
-    bottom: -2em;
+    bottom: -1em;
     left: var(--root-x, 50%);
     width: 30em;
     height: 56em;
@@ -238,7 +252,10 @@
     animation-delay: calc(var(--delay) + var(--ld, 0.5s));
     filter: drop-shadow(0 0.3em 0.4em rgba(0, 0, 0, 0.35));
   }
-  .leaf.l { --flip: scaleX(-1); }
+
+  .leaf.l {
+    --flip: scaleX(-1);
+  }
 
   .leaf::after {
     content: "";
@@ -249,7 +266,7 @@
     height: 0.13em;
     background: rgba(220, 255, 220, 0.35);
     transform-origin: 0 0;
-    transform: rotate(23.96deg);
+    transform: rotate(23.89deg);
   }
 
   /* ---------- Flower Head ---------- */
@@ -289,8 +306,14 @@
     animation: open 2.5s cubic-bezier(.22, .7, .2, 1) both;
     animation-delay: calc(var(--delay) + var(--d0) + var(--i) * 0.08s);
   }
-  .petal:nth-child(odd) { --k: 0.93; }
-  .petal:nth-child(3n)  { --k: 0.97; }
+
+  .petal:nth-child(odd) {
+    --k: 0.93;
+  }
+
+  .petal:nth-child(3n) {
+    --k: 0.97;
+  }
 
   .petal::after {
     content: "";
@@ -304,12 +327,38 @@
     background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.28));
   }
 
-  .outer { --w: 5.8em; --h0: 10.6em; --step: 30deg; --off: 0deg;  --d0: 2.4s;
-           --c1: var(--c1-o); --c2: var(--c2-o); --c3: var(--c3-o); }
-  .mid   { --w: 4.6em; --h0: 8.2em;  --step: 36deg; --off: 18deg; --d0: 2.95s;
-           --c1: var(--c1-m); --c2: var(--c2-m); --c3: var(--c3-m); }
-  .inner { --w: 3.4em; --h0: 5.8em;  --step: 45deg; --off: 11deg; --d0: 3.45s;
-           --c1: var(--c1-i); --c2: var(--c2-i); --c3: var(--c3-i); }
+  .outer {
+    --w: 5.8em;
+    --h0: 10.6em;
+    --step: 30deg;
+    --off: 0deg;
+    --d0: 2.4s;
+    --c1: var(--c1-o);
+    --c2: var(--c2-o);
+    --c3: var(--c3-o);
+  }
+
+  .mid {
+    --w: 4.6em;
+    --h0: 8.2em;
+    --step: 36deg;
+    --off: 18deg;
+    --d0: 2.95s;
+    --c1: var(--c1-m);
+    --c2: var(--c2-m);
+    --c3: var(--c3-m);
+  }
+
+  .inner {
+    --w: 3.4em;
+    --h0: 5.8em;
+    --step: 45deg;
+    --off: 11deg;
+    --d0: 3.45s;
+    --c1: var(--c1-i);
+    --c2: var(--c2-i);
+    --c3: var(--c3-i);
+  }
 
   .center {
     position: absolute;
@@ -321,4 +370,294 @@
     background:
       radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55), transparent 40%),
       repeating-radial-gradient(circle, #c98a00 0 0.25em, #f2c230 0.25em 0.5em);
-    box-shadow: 0 0 0 0.
+    box-shadow: 0 0 0 0.3em #b07a00, 0 0.3em 0.8em rgba(0, 0, 0, 0.4);
+    animation: pop 1s ease-out calc(var(--delay) + 3.2s) both;
+  }
+
+  /* ================= KEYFRAMES ================= */
+  @keyframes grow {
+    to {
+      height: var(--stem-h);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      top: 56em;
+    }
+    to {
+      top: var(--head-top);
+    }
+  }
+
+  @keyframes leaf {
+    from {
+      transform: var(--flip) rotate(calc(var(--rot) + 60deg)) scale(0);
+    }
+    to {
+      transform: var(--flip) rotate(var(--rot)) scale(var(--s));
+    }
+  }
+
+  @keyframes bud {
+    0%, 60% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+
+  @keyframes open {
+    0% {
+      opacity: 0;
+      transform: rotate(calc(var(--r) * 0.1)) scale(0.3);
+    }
+    15% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: rotate(var(--r)) scale(1);
+    }
+  }
+
+  @keyframes pop {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes drawRing {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes wLeaf {
+    from {
+      transform: scaleY(var(--dir)) rotate(45deg) scale(0);
+    }
+    to {
+      transform: scaleY(var(--dir)) rotate(var(--wr, -28deg)) scale(var(--ws, 1));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01s !important;
+      animation-delay: 0s !important;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="medallion">
+    <div class="inner-glow"></div>
+
+    <!-- Flower Bush Clipped Inside the Circular Wreath -->
+    <div class="bush-clip">
+      <div class="bush" id="bush">
+        <div class="foliage-base" id="foliage-base"></div>
+      </div>
+    </div>
+
+    <!-- Surrounding Circle of Stems & Leaves -->
+    <div class="wreath" id="wreath">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="stem-ring r1" cx="50" cy="50" r="43" transform="rotate(-90 50 50)" />
+        <circle class="stem-ring r2" cx="50" cy="50" r="41.7" transform="rotate(-65 50 50)" />
+        <circle class="stem-ring r3" cx="50" cy="50" r="44.2" transform="rotate(-115 50 50)" />
+      </svg>
+    </div>
+  </div>
+
+<script>
+  const bush = document.getElementById('bush');
+  const foliageBase = document.getElementById('foliage-base');
+
+  // Lush foliage mound at the base of the bush
+  const baseLeaves = [
+    { side: 'l', x: '-2em', top: '-4em',  s: 1.15, rot: -18, bd: '0.25s' },
+    { side: 'r', x: '2em',  top: '-4em',  s: 1.15, rot: -18, bd: '0.30s' },
+    { side: 'l', x: '-1em', top: '-8em',  s: 1.05, rot: -34, bd: '0.45s' },
+    { side: 'r', x: '1em',  top: '-8em',  s: 1.05, rot: -34, bd: '0.50s' },
+    { side: 'l', x: '0em',  top: '-12em', s: 0.92, rot: -50, bd: '0.65s' },
+    { side: 'r', x: '0em',  top: '-12em', s: 0.92, rot: -50, bd: '0.70s' }
+  ];
+
+  baseLeaves.forEach(bl => {
+    const el = document.createElement('div');
+    el.className = `bush-leaf ${bl.side}`;
+    el.style.left = bl.x;
+    el.style.top = bl.top;
+    el.style.setProperty('--s', bl.s);
+    el.style.setProperty('--rot', `${bl.rot}deg`);
+    el.style.setProperty('--bd', bl.bd);
+    foliageBase.appendChild(el);
+  });
+
+  // 4 flowers clustered tightly together from a shared bush root inside the circle
+  const flowers = [
+    // Back-left bloom
+    {
+      rootX: '47%',
+      tilt: '-19deg',
+      scale: 0.85,
+      stemH: '37em',
+      headTop: '19em',
+      theme: 'lavender',
+      z: 2,
+      delay: '0.18s',
+      leaves: [
+        { side: 'l', top: '46em', s: 0.92, rot: -42, ld: '0.45s' },
+        { side: 'r', top: '39em', s: 0.80, rot: -50, ld: '0.80s' },
+        { side: 'l', top: '31em', s: 0.68, rot: -58, ld: '1.15s' }
+      ]
+    },
+    // Back-right bloom
+    {
+      rootX: '53%',
+      tilt: '20deg',
+      scale: 0.83,
+      stemH: '36em',
+      headTop: '20em',
+      theme: 'coral',
+      z: 2,
+      delay: '0.25s',
+      leaves: [
+        { side: 'r', top: '46em', s: 0.92, rot: -42, ld: '0.50s' },
+        { side: 'l', top: '39em', s: 0.80, rot: -50, ld: '0.85s' },
+        { side: 'r', top: '31em', s: 0.68, rot: -58, ld: '1.20s' }
+      ]
+    },
+    // Tall central-left hero bloom
+    {
+      rootX: '49%',
+      tilt: '-6deg',
+      scale: 0.98,
+      stemH: '41em',
+      headTop: '15em',
+      theme: '',
+      z: 4,
+      delay: '0s',
+      leaves: [
+        { side: 'l', top: '47em', s: 1.00, rot: -40, ld: '0.35s' },
+        { side: 'r', top: '41em', s: 0.90, rot: -46, ld: '0.65s' },
+        { side: 'l', top: '34em', s: 0.78, rot: -54, ld: '0.95s' },
+        { side: 'r', top: '27em', s: 0.66, rot: -62, ld: '1.25s' }
+      ]
+    },
+    // Front-right companion bloom nested closely into the bush
+    {
+      rootX: '51.5%',
+      tilt: '8deg',
+      scale: 0.90,
+      stemH: '34em',
+      headTop: '22em',
+      theme: 'gold',
+      z: 5,
+      delay: '0.12s',
+      leaves: [
+        { side: 'r', top: '47em', s: 0.96, rot: -42, ld: '0.40s' },
+        { side: 'l', top: '40em', s: 0.85, rot: -50, ld: '0.75s' },
+        { side: 'r', top: '33em', s: 0.72, rot: -58, ld: '1.10s' }
+      ]
+    }
+  ];
+
+  const makePetals = (cls, count) => {
+    const ring = document.createElement('div');
+    ring.className = `ring ${cls}`;
+    for (let i = 0; i < count; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.setProperty('--i', i);
+      ring.appendChild(petal);
+    }
+    return ring;
+  };
+
+  flowers.forEach(f => {
+    const el = document.createElement('div');
+    el.className = f.theme ? `flower ${f.theme}` : 'flower';
+    el.style.setProperty('--root-x', f.rootX);
+    el.style.setProperty('--tilt', f.tilt);
+    el.style.setProperty('--scale', f.scale);
+    el.style.setProperty('--stem-h', f.stemH);
+    el.style.setProperty('--head-top', f.headTop);
+    el.style.setProperty('--z', f.z);
+    el.style.setProperty('--delay', f.delay);
+
+    const stem = document.createElement('div');
+    stem.className = 'stem';
+    el.appendChild(stem);
+
+    f.leaves.forEach(lf => {
+      const leaf = document.createElement('div');
+      leaf.className = `leaf ${lf.side}`;
+      leaf.style.top = lf.top;
+      leaf.style.setProperty('--s', lf.s);
+      leaf.style.setProperty('--rot', `${lf.rot}deg`);
+      leaf.style.setProperty('--ld', lf.ld);
+      el.appendChild(leaf);
+    });
+
+    const head = document.createElement('div');
+    head.className = 'head';
+
+    const bud = document.createElement('div');
+    bud.className = 'bud';
+    head.appendChild(bud);
+
+    head.appendChild(makePetals('outer', 12));
+    head.appendChild(makePetals('mid', 10));
+    head.appendChild(makePetals('inner', 8));
+
+    const center = document.createElement('div');
+    center.className = 'center';
+    head.appendChild(center);
+
+    el.appendChild(head);
+    bush.appendChild(el);
+  });
+
+  // Populate leaves along the circular stems simultaneously as the ring draws
+  const wreath = document.getElementById('wreath');
+  const pairs = 20;
+
+  for (let i = 0; i < pairs; i++) {
+    const angle = (360 / pairs) * i;
+    const progressDelay = 0.2 + (i / pairs) * 2.55;
+
+    const node = document.createElement('div');
+    node.className = 'w-node';
+    node.style.setProperty('--a', `${angle}deg`);
+
+    const outerScale = (0.88 + (i % 3) * 0.1).toFixed(2);
+    const innerScale = (0.74 + ((i + 1) % 3) * 0.08).toFixed(2);
+
+    const outerLeaf = document.createElement('div');
+    outerLeaf.className = 'w-leaf out';
+    outerLeaf.style.setProperty('--wr', '-24deg');
+    outerLeaf.style.setProperty('--ws', outerScale);
+    outerLeaf.style.setProperty('--wd', `${progressDelay.toFixed(2)}s`);
+
+    const innerLeaf = document.createElement('div');
+    innerLeaf.className = 'w-leaf in';
+    innerLeaf.style.setProperty('--wr', '-30deg');
+    innerLeaf.style.setProperty('--ws', innerScale);
+    innerLeaf.style.setProperty('--wd', `${(progressDelay + 0.12).toFixed(2)}s`);
+
+    node.appendChild(outerLeaf);
+    node.appendChild(innerLeaf);
+    wreath.appendChild(node);
+  }
+</script>
+</body>
+</html>
