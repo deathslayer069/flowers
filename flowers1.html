@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloom Bush Wreath</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    background: radial-gradient(ellipse at 50% 42%, #24382f 0%, #121c18 75%);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  /* Master circular frame scaled smoothly with viewport */
+  .medallion {
+    position: relative;
+    width: 72em;
+    height: 72em;
+    font-size: min(1.22vh, 1.22vw);
+    display: grid;
+    place-items: center;
+  }
+
+  /* Subtle dark botanical backdrop inside the wreath */
+  .inner-glow {
+    position: absolute;
+    width: 60em;
+    height: 60em;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 58%, rgba(42, 74, 56, 0.45) 0%, rgba(16, 26, 21, 0.7) 72%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* ================= CIRCULAR STEM & LEAF WREATH ================= */
+  .wreath {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .wreath svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 0.5em 0.9em rgba(0, 0, 0, 0.4));
+  }
+
+  /* Three intertwined circular stems drawing simultaneously */
+  .stem-ring {
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 290;
+    stroke-dashoffset: 290;
+    animation: drawRing 3s cubic-bezier(.35, .05, .25, 1) forwards;
+  }
+  .stem-ring.r1 {
+    stroke: #3a7c48;
+    stroke-width: 2.3;
+    animation-delay: 0.05s;
+  }
+  .stem-ring.r2 {
+    stroke: #5aa866;
+    stroke-width: 1.5;
+    stroke-dasharray: 278;
+    stroke-dashoffset: 278;
+    animation-delay: 0.25s;
+  }
+  .stem-ring.r3 {
+    stroke: #265933;
+    stroke-width: 1.1;
+    stroke-dasharray: 302;
+    stroke-dashoffset: 302;
+    animation-delay: 0.45s;
+  }
+
+  .w-node {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform: rotate(var(--a)) translateY(-30.9em);
+  }
+
+  .w-leaf {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8.2em;
+    height: 3.6em;
+    background: linear-gradient(160deg, #6ec47b 0%, #3b8450 55%, #276338 100%);
+    border-radius: 0 100% 0 100%;
+    transform-origin: 0 0;
+    --dir: 1;
+    animation: wLeaf 1.4s cubic-bezier(.2, .75, .25, 1) both;
+    animation-delay: var(--wd, 0.5s);
+    filter: drop-shadow(0 0.25em 0.35em rgba(0, 0, 0, 0.35));
+  }
+  .w-leaf.in {
+    --dir: -1;
+    background: linear-gradient(160deg, #56a863 0%, #2f7041 60%, #1e4f2c 100%);
+  }
+  .w-leaf::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8.9em;
+    height: 0.11em;
+    background: rgba(220, 255, 220, 0.35);
+    transform-origin: 0 0;
+    transform: rotate(23.96deg);
+  }
+
+  /* ================= FLOWER BUSH INSIDE THE CIRCLE ================= */
+  .bush-clip {
+    position: relative;
+    width: 61.5em;
+    height: 61.5em;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .bush {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Dense base foliage mound anchoring the flower stems */
+  .foliage-base {
+    position: absolute;
+    bottom: -1em;
+    left: 50%;
+    width: 0;
+    height: 0;
+    z-index: 1;
+  }
+
+  .bush-leaf {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 17em;
+    height: 7.6em;
+    background: linear-gradient(160deg, #5eb36b 0%, #357a48 55%, #215931 100%);
+    border-radius: 0 100% 0 100%;
+    transform-origin: 0 0;
+    --flip: scaleX(1);
+    animation: leaf 1.6s cubic-bezier(.2, .7, .2, 1) both;
+    animation-delay: var(--bd, 0.3s);
+    filter: drop-shadow(0 0.3em 0.45em rgba(0, 0, 0, 0.4));
+  }
+  .bush-leaf.l { --flip: scaleX(-1); }
+  .bush-leaf::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18.6em;
+    height: 0.14em;
+    background: rgba(220, 255, 220, 0.32);
+    transform-origin: 0 0;
+    transform: rotate(23.96deg);
+  }
+
+  /* Individual flower anchored at a shared root point so stems fan out like a bush */
+  .flower {
+    position: absolute;
+    bottom: -2em;
+    left: var(--root-x, 50%);
+    width: 30em;
+    height: 56em;
+    margin-left: -15em;
+    transform-origin: 50% 100%;
+    transform: rotate(var(--tilt, 0deg)) scale(var(--scale, 1));
+    z-index: var(--z, 2);
+    --delay: 0s;
+    --stem-h: 41em;
+    --head-top: 15em;
+    /* Default Rose Pink */
+    --c1-o: #b8305f; --c2-o: #f27aa3; --c3-o: #ffd6e3;
+    --c1-m: #a3214f; --c2-m: #e0568a; --c3-m: #ffb3cb;
+    --c1-i: #8a1642; --c2-i: #cc3a74; --c3-i: #f58db0;
+    --bud-c1: #e0568a; --bud-c2: #ff9ab8;
+  }
+
+  .flower.gold {
+    --c1-o: #b85d19; --c2-o: #f29d38; --c3-o: #ffe4b5;
+    --c1-m: #9e470e; --c2-m: #e08222; --c3-m: #ffd085;
+    --c1-i: #7d3206; --c2-i: #c46612; --c3-i: #f7b85c;
+    --bud-c1: #e08222; --bud-c2: #ffd085;
+  }
+
+  .flower.lavender {
+    --c1-o: #5e358c; --c2-o: #9d6ed4; --c3-o: #e6d4ff;
+    --c1-m: #4a2475; --c2-m: #8454bd; --c3-m: #d3b5fa;
+    --c1-i: #36155c; --c2-i: #6b3ca3; --c3-i: #bc94f0;
+    --bud-c1: #8454bd; --bud-c2: #d3b5fa;
+  }
+
+  .flower.coral {
+    --c1-o: #b5342b; --c2-o: #f06d5d; --c3-o: #ffd5cf;
+    --c1-m: #99221a; --c2-m: #db5040; --c3-m: #ffb3a8;
+    --c1-i: #7a130c; --c2-i: #bd3728; --c3-i: #f28c7e;
+    --bud-c1: #db5040; --bud-c2: #ffb3a8;
+  }
+
+  /* ---------- Stem ---------- */
+  .stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 1.2em;
+    height: 0;
+    margin-left: -0.6em;
+    background: linear-gradient(90deg, #2f6a3d, #5aa866 45%, #3a7c48);
+    border-radius: 0.7em 0.7em 0 0;
+    animation: grow 2.3s ease-out var(--delay) forwards;
+  }
+
+  /* ---------- Stem Leaves ---------- */
+  .leaf {
+    position: absolute;
+    left: 50%;
+    width: 14em;
+    height: 6.2em;
+    background: linear-gradient(160deg, #66b872 0%, #3b8450 55%, #2a6a3d 100%);
+    border-radius: 0 100% 0 100%;
+    transform-origin: 0 0;
+    --flip: scaleX(1);
+    animation: leaf 1.5s cubic-bezier(.2, .7, .2, 1) both;
+    animation-delay: calc(var(--delay) + var(--ld, 0.5s));
+    filter: drop-shadow(0 0.3em 0.4em rgba(0, 0, 0, 0.35));
+  }
+  .leaf.l { --flip: scaleX(-1); }
+
+  .leaf::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 15.3em;
+    height: 0.13em;
+    background: rgba(220, 255, 220, 0.35);
+    transform-origin: 0 0;
+    transform: rotate(23.96deg);
+  }
+
+  /* ---------- Flower Head ---------- */
+  .head {
+    position: absolute;
+    left: 50%;
+    top: var(--head-top);
+    width: 0;
+    height: 0;
+    animation: rise 2.3s ease-out var(--delay) both;
+  }
+
+  .bud {
+    position: absolute;
+    left: -1.9em;
+    top: -4.8em;
+    width: 3.8em;
+    height: 5.6em;
+    border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+    background: linear-gradient(to top, #3f8450 0%, #4f9a5b 28%, var(--bud-c1) 55%, var(--bud-c2) 100%);
+    animation: bud 1.2s ease-in calc(var(--delay) + 2.4s) both;
+  }
+
+  .petal {
+    --k: 1;
+    --h: calc(var(--h0) * var(--k));
+    --r: calc(var(--i) * var(--step) + var(--off));
+    position: absolute;
+    left: calc(var(--w) / -2);
+    top: calc(var(--h) * -1);
+    width: var(--w);
+    height: var(--h);
+    transform-origin: 50% 100%;
+    border-radius: 50% 50% 45% 45% / 85% 85% 15% 15%;
+    background: linear-gradient(to top, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%);
+    filter: drop-shadow(0 0.15em 0.3em rgba(0, 0, 0, 0.32));
+    animation: open 2.5s cubic-bezier(.22, .7, .2, 1) both;
+    animation-delay: calc(var(--delay) + var(--d0) + var(--i) * 0.08s);
+  }
+  .petal:nth-child(odd) { --k: 0.93; }
+  .petal:nth-child(3n)  { --k: 0.97; }
+
+  .petal::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    width: 0.13em;
+    height: 70%;
+    transform: translateX(-50%);
+    border-radius: 1em;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.28));
+  }
+
+  .outer { --w: 5.8em; --h0: 10.6em; --step: 30deg; --off: 0deg;  --d0: 2.4s;
+           --c1: var(--c1-o); --c2: var(--c2-o); --c3: var(--c3-o); }
+  .mid   { --w: 4.6em; --h0: 8.2em;  --step: 36deg; --off: 18deg; --d0: 2.95s;
+           --c1: var(--c1-m); --c2: var(--c2-m); --c3: var(--c3-m); }
+  .inner { --w: 3.4em; --h0: 5.8em;  --step: 45deg; --off: 11deg; --d0: 3.45s;
+           --c1: var(--c1-i); --c2: var(--c2-i); --c3: var(--c3-i); }
+
+  .center {
+    position: absolute;
+    left: -2.35em;
+    top: -2.35em;
+    width: 4.7em;
+    height: 4.7em;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55), transparent 40%),
+      repeating-radial-gradient(circle, #c98a00 0 0.25em, #f2c230 0.25em 0.5em);
+    box-shadow: 0 0 0 0.
