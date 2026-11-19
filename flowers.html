@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bloom Bush Wreath</title>
+<title>Botanical Crest — Bloom &amp; Wreath</title>
 <style>
   * {
     margin: 0;
@@ -16,37 +16,40 @@
   }
 
   body {
-    background: radial-gradient(ellipse at 50% 42%, #24382f 0%, #121c18 75%);
+    background: radial-gradient(circle at 50% 44%, #1f332a 0%, #111b17 68%, #0a100d 100%);
     display: grid;
     place-items: center;
     overflow: hidden;
   }
 
-  /* Master circular frame scaled smoothly with viewport */
-  .medallion {
+  /* Master circular emblem scaled proportionally with viewport */
+  .emblem {
     position: relative;
-    width: 72em;
-    height: 72em;
+    width: 74em;
+    height: 74em;
     font-size: min(1.22vh, 1.22vw);
     display: grid;
     place-items: center;
   }
 
-  /* Subtle dark botanical backdrop inside the wreath */
-  .inner-glow {
+  /* Recessed vignette backdrop & fine hair-line inner frame */
+  .backdrop {
     position: absolute;
-    width: 60em;
-    height: 60em;
+    width: 61.6em;
+    height: 61.6em;
     border-radius: 50%;
-    background: radial-gradient(circle at 50% 58%, rgba(42, 74, 56, 0.45) 0%, rgba(16, 26, 21, 0.7) 72%, transparent 100%);
+    background: radial-gradient(circle at 50% 55%, rgba(44, 78, 59, 0.42) 0%, rgba(14, 24, 19, 0.85) 78%, rgba(8, 14, 11, 0.95) 100%);
+    box-shadow:
+      inset 0 0.4em 2.2em rgba(0, 0, 0, 0.65),
+      0 0 0 0.14em rgba(212, 180, 118, 0.22);
     pointer-events: none;
   }
 
-  /* ================= CIRCULAR STEM & LEAF WREATH ================= */
+  /* ================= SURROUNDING BOTANICAL WREATH ================= */
   .wreath {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 4;
     pointer-events: none;
   }
 
@@ -54,67 +57,71 @@
     width: 100%;
     height: 100%;
     overflow: visible;
-    filter: drop-shadow(0 0.5em 0.9em rgba(0, 0, 0, 0.4));
+    filter: drop-shadow(0 0.45em 0.85em rgba(0, 0, 0, 0.45));
   }
 
-  /* Three intertwined circular stems drawing simultaneously */
+  /* Precision circular stems drawn simultaneously */
   .stem-ring {
     fill: none;
     stroke-linecap: round;
-    animation: drawRing 3s cubic-bezier(.35, .05, .25, 1) forwards;
+    animation: drawRing 2.9s cubic-bezier(.33, .06, .22, 1) forwards;
   }
 
-  .stem-ring.r1 {
-    stroke: #3a7c48;
-    stroke-width: 2.3;
-    stroke-dasharray: 271;
-    stroke-dashoffset: 271;
+  /* r = 42.5 -> C = 2 * pi * 42.5 = 267.04 */
+  .stem-ring.primary {
+    stroke: #3f8450;
+    stroke-width: 2.1;
+    stroke-dasharray: 267.1;
+    stroke-dashoffset: 267.1;
     animation-delay: 0.05s;
   }
 
-  .stem-ring.r2 {
-    stroke: #5aa866;
-    stroke-width: 1.5;
-    stroke-dasharray: 263;
-    stroke-dashoffset: 263;
-    animation-delay: 0.25s;
+  /* r = 41.3 -> C = 2 * pi * 41.3 = 259.50 */
+  .stem-ring.highlight {
+    stroke: #66b872;
+    stroke-width: 1.25;
+    stroke-dasharray: 259.5;
+    stroke-dashoffset: 259.5;
+    animation-delay: 0.22s;
   }
 
-  .stem-ring.r3 {
-    stroke: #265933;
-    stroke-width: 1.1;
-    stroke-dasharray: 279;
-    stroke-dashoffset: 279;
-    animation-delay: 0.45s;
+  /* r = 43.6 -> C = 2 * pi * 43.6 = 273.95 */
+  .stem-ring.shadow {
+    stroke: #245431;
+    stroke-width: 1.05;
+    stroke-dasharray: 274.0;
+    stroke-dashoffset: 274.0;
+    animation-delay: 0.38s;
   }
 
+  /* Positioned strictly along the primary ring radius (42.5% of 74em = 31.45em) */
   .w-node {
     position: absolute;
     left: 50%;
     top: 50%;
     width: 0;
     height: 0;
-    transform: rotate(var(--a, 0deg)) translateY(-30.96em);
+    transform: rotate(var(--a, 0deg)) translateY(-31.45em);
   }
 
   .w-leaf {
     position: absolute;
     left: 0;
     top: 0;
-    width: 8em;
-    height: 3.5em;
-    background: linear-gradient(160deg, #6ec47b 0%, #3b8450 55%, #276338 100%);
+    width: 7.4em;
+    height: 3.1em;
+    background: linear-gradient(160deg, #74ca80 0%, #3d8752 55%, #255e35 100%);
     border-radius: 0 100% 0 100%;
     transform-origin: 0 0;
     --dir: 1;
-    animation: wLeaf 1.4s cubic-bezier(.2, .75, .25, 1) both;
-    animation-delay: var(--wd, 0.5s);
-    filter: drop-shadow(0 0.25em 0.35em rgba(0, 0, 0, 0.35));
+    animation: wLeaf 1.35s cubic-bezier(.2, .75, .25, 1) both;
+    animation-delay: var(--wd, 0.4s);
+    filter: drop-shadow(0 0.2em 0.32em rgba(0, 0, 0, 0.35));
   }
 
   .w-leaf.in {
     --dir: -1;
-    background: linear-gradient(160deg, #56a863 0%, #2f7041 60%, #1e4f2c 100%);
+    background: linear-gradient(160deg, #58ab65 0%, #2f7041 60%, #1d4c2a 100%);
   }
 
   .w-leaf::after {
@@ -122,30 +129,43 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 8.7em;
-    height: 0.11em;
-    background: rgba(220, 255, 220, 0.35);
+    width: 8.02em;
+    height: 0.1em;
+    background: rgba(230, 255, 230, 0.38);
     transform-origin: 0 0;
-    transform: rotate(23.63deg);
+    transform: rotate(22.73deg);
   }
 
-  /* ================= FLOWER BUSH INSIDE THE CIRCLE ================= */
-  .bush-clip {
+  /* Small golden berry accents placed at cardinal intervals around the wreath */
+  .w-berry {
+    position: absolute;
+    left: -0.55em;
+    top: -0.55em;
+    width: 1.1em;
+    height: 1.1em;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ffe9a8 0%, #e0a938 60%, #9c6b14 100%);
+    box-shadow: 0 0.15em 0.3em rgba(0, 0, 0, 0.45);
+    animation: pop 0.7s ease-out var(--bd, 1s) both;
+  }
+
+  /* ================= CURATED FLOWER BOUQUET ================= */
+  .bouquet-clip {
     position: relative;
-    width: 61.5em;
-    height: 61.5em;
+    width: 61.6em;
+    height: 61.6em;
     border-radius: 50%;
     overflow: hidden;
     z-index: 2;
   }
 
-  .bush {
+  .bouquet {
     position: absolute;
     inset: 0;
   }
 
-  /* Symmetrical, tiered base foliage fan framing the bottom of the bush */
-  .foliage-base {
+  /* Structured, symmetrical foliage bed anchoring the bouquet base */
+  .foliage-bed {
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -154,75 +174,76 @@
     z-index: 1;
   }
 
-  .bush-leaf {
+  .bed-leaf {
     position: absolute;
-    width: 17.5em;
-    height: 7.8em;
-    background: linear-gradient(160deg, #5eb36b 0%, #357a48 55%, #215931 100%);
+    width: 16.5em;
+    height: 7.2em;
+    background: linear-gradient(160deg, #62b86f 0%, #367c49 55%, #20562f 100%);
     border-radius: 0 100% 0 100%;
     transform-origin: 0 0;
     --flip: scaleX(1);
-    animation: leaf 1.6s cubic-bezier(.2, .7, .2, 1) both;
-    animation-delay: var(--bd, 0.3s);
-    filter: drop-shadow(0 0.3em 0.45em rgba(0, 0, 0, 0.4));
+    animation: leaf 1.5s cubic-bezier(.2, .7, .2, 1) both;
+    animation-delay: var(--ld, 0.25s);
+    filter: drop-shadow(0 0.28em 0.42em rgba(0, 0, 0, 0.42));
   }
 
-  .bush-leaf.l {
+  .bed-leaf.l {
     --flip: scaleX(-1);
   }
 
-  .bush-leaf::after {
+  .bed-leaf::after {
     content: "";
     position: absolute;
     left: 0;
     top: 0;
-    width: 19.1em;
-    height: 0.14em;
+    width: 18em;
+    height: 0.13em;
     background: rgba(220, 255, 220, 0.32);
     transform-origin: 0 0;
-    transform: rotate(24.02deg);
+    transform: rotate(23.57deg);
   }
 
-  /* Individual flower anchored cleanly at the bush crown */
+  /* Individual flower stem & bloom */
   .flower {
     position: absolute;
-    bottom: -1em;
+    bottom: -0.5em;
     left: var(--root-x, 50%);
-    width: 30em;
-    height: 56em;
-    margin-left: -15em;
+    width: 28em;
+    height: 55em;
+    margin-left: -14em;
     transform-origin: 50% 100%;
     transform: rotate(var(--tilt, 0deg)) scale(var(--scale, 1));
     z-index: var(--z, 2);
     --delay: 0s;
-    --stem-h: 41em;
+    --stem-h: 40em;
     --head-top: 15em;
-    /* Default Rose Pink */
-    --c1-o: #b8305f; --c2-o: #f27aa3; --c3-o: #ffd6e3;
-    --c1-m: #a3214f; --c2-m: #e0568a; --c3-m: #ffb3cb;
-    --c1-i: #8a1642; --c2-i: #cc3a74; --c3-i: #f58db0;
-    --bud-c1: #e0568a; --bud-c2: #ff9ab8;
+    /* Default Rose Crimson-Pink Palette */
+    --c1-o: #a82854; --c2-o: #eb6e98; --c3-o: #ffd4e2;
+    --c1-m: #911c45; --c2-m: #d64d7e; --c3-m: #ffb0c9;
+    --c1-i: #781237; --c2-i: #bf3469; --c3-i: #f288ac;
+    --bud-c1: #d64d7e; --bud-c2: #ff99b8;
   }
 
-  .flower.gold {
-    --c1-o: #b85d19; --c2-o: #f29d38; --c3-o: #ffe4b5;
-    --c1-m: #9e470e; --c2-m: #e08222; --c3-m: #ffd085;
-    --c1-i: #7d3206; --c2-i: #c46612; --c3-i: #f7b85c;
-    --bud-c1: #e08222; --bud-c2: #ffd085;
+  /* Cohesive Botanical Color Harmonies */
+  .flower.champagne {
+    --c1-o: #b3621e; --c2-o: #eda145; --c3-o: #ffe8c2;
+    --c1-m: #994c11; --c2-m: #db872c; --c3-m: #ffd594;
+    --c1-i: #7a3707; --c2-i: #bf6b19; --c3-i: #f5bc6c;
+    --bud-c1: #db872c; --bud-c2: #ffd594;
   }
 
-  .flower.lavender {
-    --c1-o: #5e358c; --c2-o: #9d6ed4; --c3-o: #e6d4ff;
-    --c1-m: #4a2475; --c2-m: #8454bd; --c3-m: #d3b5fa;
-    --c1-i: #36155c; --c2-i: #6b3ca3; --c3-i: #bc94f0;
-    --bud-c1: #8454bd; --bud-c2: #d3b5fa;
+  .flower.blush {
+    --c1-o: #b54540; --c2-o: #ed7b74; --c3-o: #ffdad6;
+    --c1-m: #99312c; --c2-m: #d95d57; --c3-m: #ffb8b3;
+    --c1-i: #7a1f1b; --c2-i: #bd403a; --c3-i: #f0948e;
+    --bud-c1: #d95d57; --bud-c2: #ffb8b3;
   }
 
-  .flower.coral {
-    --c1-o: #b5342b; --c2-o: #f06d5d; --c3-o: #ffd5cf;
-    --c1-m: #99221a; --c2-m: #db5040; --c3-m: #ffb3a8;
-    --c1-i: #7a130c; --c2-i: #bd3728; --c3-i: #f28c7e;
-    --bud-c1: #db5040; --bud-c2: #ffb3a8;
+  .flower.plum {
+    --c1-o: #66337a; --c2-o: #a468bd; --c3-o: #ebd4f5;
+    --c1-m: #522366; --c2-m: #8c4fa6; --c3-m: #d9b5eb;
+    --c1-i: #3d154f; --c2-i: #73378c; --c3-i: #c294d9;
+    --bud-c1: #8c4fa6; --bud-c2: #d9b5eb;
   }
 
   /* ---------- Stem ---------- */
@@ -230,27 +251,27 @@
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: 1.2em;
+    width: 1.15em;
     height: 0;
-    margin-left: -0.6em;
-    background: linear-gradient(90deg, #2f6a3d, #5aa866 45%, #3a7c48);
-    border-radius: 0.7em 0.7em 0 0;
-    animation: grow 2.3s ease-out var(--delay) forwards;
+    margin-left: -0.575em;
+    background: linear-gradient(90deg, #2c6339, #57a363 45%, #377544);
+    border-radius: 0.6em 0.6em 0 0;
+    animation: grow 2.2s ease-out var(--delay) forwards;
   }
 
   /* ---------- Stem Leaves ---------- */
   .leaf {
     position: absolute;
     left: 50%;
-    width: 13.5em;
-    height: 6em;
-    background: linear-gradient(160deg, #66b872 0%, #3b8450 55%, #2a6a3d 100%);
+    width: 12.6em;
+    height: 5.5em;
+    background: linear-gradient(160deg, #68ba74 0%, #3b8450 55%, #276338 100%);
     border-radius: 0 100% 0 100%;
     transform-origin: 0 0;
     --flip: scaleX(1);
-    animation: leaf 1.5s cubic-bezier(.2, .7, .2, 1) both;
+    animation: leaf 1.45s cubic-bezier(.2, .7, .2, 1) both;
     animation-delay: calc(var(--delay) + var(--ld, 0.5s));
-    filter: drop-shadow(0 0.3em 0.4em rgba(0, 0, 0, 0.35));
+    filter: drop-shadow(0 0.25em 0.35em rgba(0, 0, 0, 0.35));
   }
 
   .leaf.l {
@@ -262,11 +283,11 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 14.7em;
-    height: 0.13em;
-    background: rgba(220, 255, 220, 0.35);
+    width: 13.75em;
+    height: 0.12em;
+    background: rgba(225, 255, 225, 0.35);
     transform-origin: 0 0;
-    transform: rotate(23.96deg);
+    transform: rotate(23.58deg);
   }
 
   /* ---------- Flower Head ---------- */
@@ -276,18 +297,18 @@
     top: var(--head-top);
     width: 0;
     height: 0;
-    animation: rise 2.3s ease-out var(--delay) both;
+    animation: rise 2.2s ease-out var(--delay) both;
   }
 
   .bud {
     position: absolute;
-    left: -1.9em;
-    top: -4.8em;
-    width: 3.8em;
-    height: 5.6em;
+    left: -1.8em;
+    top: -4.6em;
+    width: 3.6em;
+    height: 5.4em;
     border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
     background: linear-gradient(to top, #3f8450 0%, #4f9a5b 28%, var(--bud-c1) 55%, var(--bud-c2) 100%);
-    animation: bud 1.2s ease-in calc(var(--delay) + 2.4s) both;
+    animation: bud 1.15s ease-in calc(var(--delay) + 2.3s) both;
   }
 
   .petal {
@@ -302,13 +323,13 @@
     transform-origin: 50% 100%;
     border-radius: 50% 50% 45% 45% / 85% 85% 15% 15%;
     background: linear-gradient(to top, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%);
-    filter: drop-shadow(0 0.15em 0.3em rgba(0, 0, 0, 0.32));
-    animation: open 2.5s cubic-bezier(.22, .7, .2, 1) both;
-    animation-delay: calc(var(--delay) + var(--d0) + var(--i) * 0.08s);
+    filter: drop-shadow(0 0.14em 0.28em rgba(0, 0, 0, 0.32));
+    animation: open 2.4s cubic-bezier(.22, .7, .2, 1) both;
+    animation-delay: calc(var(--delay) + var(--d0) + var(--i) * 0.075s);
   }
 
   .petal:nth-child(odd) {
-    --k: 0.93;
+    --k: 0.94;
   }
 
   .petal:nth-child(3n) {
@@ -320,7 +341,7 @@
     position: absolute;
     left: 50%;
     bottom: 6%;
-    width: 0.13em;
+    width: 0.12em;
     height: 70%;
     transform: translateX(-50%);
     border-radius: 1em;
@@ -328,33 +349,33 @@
   }
 
   .outer {
-    --w: 5.8em;
-    --h0: 10.6em;
+    --w: 5.5em;
+    --h0: 10.2em;
     --step: 30deg;
     --off: 0deg;
-    --d0: 2.4s;
+    --d0: 2.3s;
     --c1: var(--c1-o);
     --c2: var(--c2-o);
     --c3: var(--c3-o);
   }
 
   .mid {
-    --w: 4.6em;
-    --h0: 8.2em;
+    --w: 4.4em;
+    --h0: 7.9em;
     --step: 36deg;
     --off: 18deg;
-    --d0: 2.95s;
+    --d0: 2.85s;
     --c1: var(--c1-m);
     --c2: var(--c2-m);
     --c3: var(--c3-m);
   }
 
   .inner {
-    --w: 3.4em;
-    --h0: 5.8em;
+    --w: 3.3em;
+    --h0: 5.6em;
     --step: 45deg;
     --off: 11deg;
-    --d0: 3.45s;
+    --d0: 3.35s;
     --c1: var(--c1-i);
     --c2: var(--c2-i);
     --c3: var(--c3-i);
@@ -362,16 +383,16 @@
 
   .center {
     position: absolute;
-    left: -2.35em;
-    top: -2.35em;
-    width: 4.7em;
-    height: 4.7em;
+    left: -2.25em;
+    top: -2.25em;
+    width: 4.5em;
+    height: 4.5em;
     border-radius: 50%;
     background:
-      radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55), transparent 40%),
-      repeating-radial-gradient(circle, #c98a00 0 0.25em, #f2c230 0.25em 0.5em);
-    box-shadow: 0 0 0 0.3em #b07a00, 0 0.3em 0.8em rgba(0, 0, 0, 0.4);
-    animation: pop 1s ease-out calc(var(--delay) + 3.2s) both;
+      radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.58), transparent 40%),
+      repeating-radial-gradient(circle, #c48500 0 0.24em, #f2c438 0.24em 0.48em);
+    box-shadow: 0 0 0 0.28em #a87200, 0 0.28em 0.75em rgba(0, 0, 0, 0.42);
+    animation: pop 0.95s ease-out calc(var(--delay) + 3.1s) both;
   }
 
   /* ================= KEYFRAMES ================= */
@@ -383,7 +404,7 @@
 
   @keyframes rise {
     from {
-      top: 56em;
+      top: 55em;
     }
     to {
       top: var(--head-top);
@@ -392,7 +413,7 @@
 
   @keyframes leaf {
     from {
-      transform: var(--flip) rotate(calc(var(--rot) + 60deg)) scale(0);
+      transform: var(--flip) rotate(calc(var(--rot) + 55deg)) scale(0);
     }
     to {
       transform: var(--flip) rotate(var(--rot)) scale(var(--s));
@@ -406,7 +427,7 @@
     }
     100% {
       opacity: 0;
-      transform: scale(1.5);
+      transform: scale(1.45);
     }
   }
 
@@ -457,15 +478,207 @@
 </style>
 </head>
 <body>
-  <div class="medallion">
-    <div class="inner-glow"></div>
+  <div class="emblem">
+    <div class="backdrop"></div>
 
-    <!-- Flower Bush Clipped Inside the Circular Wreath -->
-    <div class="bush-clip">
-      <div class="bush" id="bush">
-        <div class="foliage-base" id="foliage-base"></div>
+    <!-- Curated 4-Flower Bouquet Inside the Circle -->
+    <div class="bouquet-clip">
+      <div class="bouquet" id="bouquet">
+        <div class="foliage-bed" id="foliage-bed"></div>
       </div>
     </div>
 
-    <!-- Surrounding Circle of Stems & Leaves -->
-    <div class="wreath" id
+    <!-- Precision Circular Stem & Leaf Wreath -->
+    <div class="wreath" id="wreath">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="stem-ring primary"   cx="50" cy="50" r="42.5" transform="rotate(-90 50 50)" />
+        <circle class="stem-ring highlight" cx="50" cy="50" r="41.3" transform="rotate(-90 50 50)" />
+        <circle class="stem-ring shadow"    cx="50" cy="50" r="43.6" transform="rotate(-90 50 50)" />
+      </svg>
+    </div>
+  </div>
+
+<script>
+  const bouquet = document.getElementById('bouquet');
+  const foliageBed = document.getElementById('foliage-bed');
+
+  // 1. Symmetrical, tiered base foliage fan framing the bottom of the emblem
+  const baseTiers = [
+    { x: 2.0, top: -3.2,  s: 1.12, rot: -15, ld: 0.25 },
+    { x: 1.4, top: -7.0,  s: 1.02, rot: -30, ld: 0.42 },
+    { x: 0.8, top: -10.8, s: 0.90, rot: -45, ld: 0.58 }
+  ];
+
+  baseTiers.forEach(tier => {
+    ['l', 'r'].forEach((side, idx) => {
+      const leaf = document.createElement('div');
+      leaf.className = `bed-leaf ${side}`;
+      leaf.style.left = `${side === 'l' ? -tier.x : tier.x}em`;
+      leaf.style.top = `${tier.top}em`;
+      leaf.style.setProperty('--s', tier.s);
+      leaf.style.setProperty('--rot', `${tier.rot}deg`);
+      leaf.style.setProperty('--ld', `${(tier.ld + idx * 0.05).toFixed(2)}s`);
+      foliageBed.appendChild(leaf);
+    });
+  });
+
+  // 2. Balanced diamond-arc arrangement of 4 blooms with zero leaf/petal collisions
+  const flowers = [
+    // Left Wing Bloom (Plum)
+    {
+      rootX: '47.5%',
+      tilt: '-19deg',
+      scale: 0.84,
+      stemH: '35.5em',
+      headTop: '19.5em',
+      theme: 'plum',
+      z: 2,
+      delay: '0.18s',
+      leaves: [
+        { side: 'l', top: '42em', s: 0.90, rot: -36, ld: '0.45s' },
+        { side: 'l', top: '33em', s: 0.76, rot: -48, ld: '0.80s' }
+      ]
+    },
+    // Right Wing Bloom (Blush)
+    {
+      rootX: '52.5%',
+      tilt: '19deg',
+      scale: 0.84,
+      stemH: '35.5em',
+      headTop: '19.5em',
+      theme: 'blush',
+      z: 2,
+      delay: '0.22s',
+      leaves: [
+        { side: 'r', top: '42em', s: 0.90, rot: -36, ld: '0.48s' },
+        { side: 'r', top: '33em', s: 0.76, rot: -48, ld: '0.83s' }
+      ]
+    },
+    // Crown Hero Bloom (Rose)
+    {
+      rootX: '49.2%',
+      tilt: '-5deg',
+      scale: 0.98,
+      stemH: '40.5em',
+      headTop: '14.5em',
+      theme: '',
+      z: 4,
+      delay: '0s',
+      leaves: [
+        { side: 'l', top: '34em', s: 0.82, rot: -42, ld: '0.50s' },
+        { side: 'r', top: '29em', s: 0.72, rot: -50, ld: '0.78s' }
+      ]
+    },
+    // Foreground Focal Bloom (Champagne)
+    {
+      rootX: '51.2%',
+      tilt: '7deg',
+      scale: 0.90,
+      stemH: '31.5em',
+      headTop: '23.5em',
+      theme: 'champagne',
+      z: 5,
+      delay: '0.12s',
+      leaves: [
+        { side: 'l', top: '41em', s: 0.78, rot: -40, ld: '0.46s' },
+        { side: 'r', top: '37em', s: 0.72, rot: -48, ld: '0.72s' }
+      ]
+    }
+  ];
+
+  const makePetals = (cls, count) => {
+    const ring = document.createElement('div');
+    ring.className = `ring ${cls}`;
+    for (let i = 0; i < count; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.setProperty('--i', i);
+      ring.appendChild(petal);
+    }
+    return ring;
+  };
+
+  flowers.forEach(f => {
+    const el = document.createElement('div');
+    el.className = f.theme ? `flower ${f.theme}` : 'flower';
+    el.style.setProperty('--root-x', f.rootX);
+    el.style.setProperty('--tilt', f.tilt);
+    el.style.setProperty('--scale', f.scale);
+    el.style.setProperty('--stem-h', f.stemH);
+    el.style.setProperty('--head-top', f.headTop);
+    el.style.setProperty('--z', f.z);
+    el.style.setProperty('--delay', f.delay);
+
+    const stem = document.createElement('div');
+    stem.className = 'stem';
+    el.appendChild(stem);
+
+    f.leaves.forEach(lf => {
+      const leaf = document.createElement('div');
+      leaf.className = `leaf ${lf.side}`;
+      leaf.style.top = lf.top;
+      leaf.style.setProperty('--s', lf.s);
+      leaf.style.setProperty('--rot', `${lf.rot}deg`);
+      leaf.style.setProperty('--ld', lf.ld);
+      el.appendChild(leaf);
+    });
+
+    const head = document.createElement('div');
+    head.className = 'head';
+
+    const bud = document.createElement('div');
+    bud.className = 'bud';
+    head.appendChild(bud);
+
+    head.appendChild(makePetals('outer', 12));
+    head.appendChild(makePetals('mid', 10));
+    head.appendChild(makePetals('inner', 8));
+
+    const center = document.createElement('div');
+    center.className = 'center';
+    head.appendChild(center);
+
+    el.appendChild(head);
+    bouquet.appendChild(el);
+  });
+
+  // 3. Rhythmic wreath border: 24 symmetrical leaf pairs + 4 cardinal gold accents
+  const wreath = document.getElementById('wreath');
+  const pairs = 24;
+
+  for (let i = 0; i < pairs; i++) {
+    const angle = (360 / pairs) * i;
+    const progressDelay = 0.15 + (i / pairs) * 2.55;
+
+    const node = document.createElement('div');
+    node.className = 'w-node';
+    node.style.setProperty('--a', `${angle}deg`);
+
+    const outerLeaf = document.createElement('div');
+    outerLeaf.className = 'w-leaf out';
+    outerLeaf.style.setProperty('--wr', '-25deg');
+    outerLeaf.style.setProperty('--ws', '0.92');
+    outerLeaf.style.setProperty('--wd', `${progressDelay.toFixed(2)}s`);
+
+    const innerLeaf = document.createElement('div');
+    innerLeaf.className = 'w-leaf in';
+    innerLeaf.style.setProperty('--wr', '-29deg');
+    innerLeaf.style.setProperty('--ws', '0.78');
+    innerLeaf.style.setProperty('--wd', `${(progressDelay + 0.10).toFixed(2)}s`);
+
+    node.appendChild(outerLeaf);
+    node.appendChild(innerLeaf);
+
+    // Subtle golden berry accent at every 6th node (top, right, bottom, left)
+    if (i % 6 === 0) {
+      const berry = document.createElement('div');
+      berry.className = 'w-berry';
+      berry.style.setProperty('--bd', `${(progressDelay + 0.35).toFixed(2)}s`);
+      node.appendChild(berry);
+    }
+
+    wreath.appendChild(node);
+  }
+</script>
+</body>
+</html>
